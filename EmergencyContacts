@@ -1,0 +1,35 @@
+import React from 'react';
+
+function EmergencyContacts() {
+  const contacts = [
+    { id: 1, name: 'Emergency Services', number: '911', icon: '🚨' },
+    { id: 2, name: 'Police Department', number: '911', icon: '👮' },
+    { id: 3, name: 'Fire Department', number: '911', icon: '🚒' },
+    { id: 4, name: 'Poison Control', number: '1-800-222-1222', icon: '⚕️' },
+    { id: 5, name: 'Emergency Management Office', number: '1-800-555-0000', icon: '🏢' }
+  ];
+
+  return (
+    <div className="space-y-4">
+      {contacts.map(contact => (
+        <div
+          key={contact.id}
+          className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
+        >
+          <span className="text-2xl">{contact.icon}</span>
+          <div>
+            <h3 className="font-semibold">{contact.name}</h3>
+            <a
+              href={`tel:${contact.number}`}
+              className="text-blue-600 hover:text-blue-800"
+            >
+              {contact.number}
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default EmergencyContacts;
