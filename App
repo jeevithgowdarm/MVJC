@@ -1,0 +1,33 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import AlertSystem from './pages/AlertSystem';
+import SafeLocations from './pages/SafeLocations';
+import { AlertProvider } from './contexts/AlertContext';
+import { LocationProvider } from './contexts/LocationContext';
+import { Toaster } from 'react-hot-toast';
+
+function App() {
+  return (
+    <Router>
+      <AlertProvider>
+        <LocationProvider>
+          <div className="min-h-screen bg-gray-50">
+            <Navbar />
+            <main className="container mx-auto px-4 py-8">
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/alerts" element={<AlertSystem />} />
+                <Route path="/safe-locations" element={<SafeLocations />} />
+              </Routes>
+            </main>
+            <Toaster position="top-right" />
+          </div>
+        </LocationProvider>
+      </AlertProvider>
+    </Router>
+  );
+}
+
+export default App;
