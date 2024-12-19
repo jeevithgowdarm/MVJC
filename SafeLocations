@@ -1,0 +1,36 @@
+import React from 'react';
+import { useLocation } from '../contexts/LocationContext';
+import SafeLocationsList from '../components/SafeLocationsList';
+import LocationMap from '../components/map/LocationMap';
+
+function SafeLocations() {
+  const { currentLocation, safeLocations, loading, error } = useLocation();
+
+  if (loading) return <div className="text-center">Loading map...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
+  if (!currentLocation) return <div className="text-center">Unable to access location</div>;
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold text-gray-900">Safe Locations</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2">
+          <div className="bg-white p-4 rounded-lg shadow">
+            <LocationMap 
+              currentLocation={currentLocation}
+              safeLocations={safeLocations}
+            />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Nearby Safe Locations</h2>
+          <SafeLocationsList locations={safeLocations} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default SafeLocations;
