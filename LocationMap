@@ -1,0 +1,35 @@
+import React from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+function LocationMap({ currentLocation, safeLocations }) {
+  return (
+    <div className="h-[600px]">
+      <MapContainer
+        center={[currentLocation.lat, currentLocation.lng]}
+        zoom={13}
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        
+        <Marker position={[currentLocation.lat, currentLocation.lng]}>
+          <Popup>You are here</Popup>
+        </Marker>
+
+        {safeLocations.map(location => (
+          <Marker
+            key={location.id}
+            position={[location.lat, location.lng]}
+          >
+            <Popup>{location.name}</Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
+  );
+}
+
+export default LocationMap;
