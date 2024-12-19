@@ -1,0 +1,41 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { requestNotificationPermission } from '../utils/notifications';
+
+const AlertContext = createContext();
+
+export function AlertProvider({ children }) {
+  const [alerts, setAlerts] = useState([]);
+  const [notificationPermission, setNotificationPermission] = useState('default');
+
+  useEffect(() => {
+    const initializeNotifications = async () => {
+      const permission = await requestNotificationPermission();
+      setNotificationPermission(permission);
+    };
+    initializeNotifications();
+  }, []);
+
+  const addAlert = (alert) => {
+    setAlerts(prev => [...prev, { ...alert, id: Date.now(), timestamp: new Date() }]);
+    if (notificationPermission === 'granted') {
+      new Notification(alert.title, {
+        body: alert.message,
+        icon: '/emergency-icon.png'
+      });
+    }
+  };
+
+  const removeAlert = (alertId) => {
+    setAlerts(prev => prev.filter(alert => alert.id !== alertId));
+  };
+
+  return (
+    <AlertContext.Provider value={{ alerts, addAlert, removeAlert, notificationPermission }}>
+      {children}
+    </AlertContext.Provider>
+  );
+}
+
+export function useAlerts() {
+  return useContext(AlertContext);
+}
