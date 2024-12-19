@@ -1,0 +1,52 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getCurrentLocation } from '../utils/geolocation';
+
+const LocationContext = createContext();
+
+export function LocationProvider({ children }) {
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [safeLocations, setSafeLocations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const initializeLocation = async () => {
+      try {
+        const location = await getCurrentLocation();
+        setCurrentLocation(location);
+        // Initialize with some sample safe locations
+        setSafeLocations([
+          { id: 1, name: 'Emergency Shelter 1', lat: location.lat + 0.01, lng: location.lng + 0.01, type: 'shelter' },
+          { id: 2, name: 'Hospital Center', lat: location.lat - 0.01, lng: location.lng - 0.01, type: 'hospital' },
+          { id: 3, name: 'Police Station', lat: location.lat + 0.02, lng: location.lng - 0.02, type: 'police' },
+        ]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeLocation();
+  }, []);
+
+  const addSafeLocation = (location) => {
+    setSafeLocations(prev => [...prev, { ...location, id: Date.now() }]);
+  };
+
+  return (
+    <LocationContext.Provider value={{
+      currentLocation,
+      safeLocations,
+      loading,
+      error,
+      addSafeLocation
+    }}>
+      {children}
+    </LocationContext.Provider>
+  );
+}
+
+export function useLocation() {
+  return useContext(LocationContext);
+}
