@@ -1,0 +1,44 @@
+import React from 'react';
+
+function SafeLocationsList({ locations }) {
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case 'shelter':
+        return '🏠';
+      case 'hospital':
+        return '🏥';
+      case 'police':
+        return '👮';
+      default:
+        return '📍';
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {locations.map(location => (
+        <div
+          key={location.id}
+          className="border-l-4 border-green-500 bg-green-50 p-4"
+        >
+          <div className="flex items-center gap-2">
+            <span>{getTypeIcon(location.type)}</span>
+            <h3 className="font-semibold">{location.name}</h3>
+          </div>
+          <div className="mt-2 text-sm text-gray-600">
+            <p>Latitude: {location.lat.toFixed(6)}</p>
+            <p>Longitude: {location.lng.toFixed(6)}</p>
+          </div>
+          <button
+            onClick={() => window.open(`https://www.openstreetmap.org/?mlat=${location.lat}&mlon=${location.lng}#map=16/${location.lat}/${location.lng}`)}
+            className="mt-2 text-sm text-blue-600 hover:text-blue-800"
+          >
+            Get Directions
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default SafeLocationsList;
