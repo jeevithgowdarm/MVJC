@@ -1,0 +1,33 @@
+import React from 'react';
+import { useAlerts } from '../contexts/AlertContext';
+import { useLocation } from '../contexts/LocationContext';
+import AlertList from '../components/AlertList';
+import EmergencyContacts from '../components/EmergencyContacts';
+
+function Dashboard() {
+  const { alerts } = useAlerts();
+  const { currentLocation, loading, error } = useLocation();
+
+  if (loading) return <div className="text-center">Loading...</div>;
+  if (error) return <div className="text-red-500">Error: {error}</div>;
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold text-gray-900">Emergency Dashboard</h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Current Alerts</h2>
+          <AlertList alerts={alerts} />
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Emergency Contacts</h2>
+          <EmergencyContacts />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;
