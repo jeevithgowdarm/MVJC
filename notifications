@@ -1,0 +1,12 @@
+export const requestNotificationPermission = async () => {
+  if (!('Notification' in window)) {
+    return 'denied';
+  }
+
+  if (Notification.permission !== 'denied') {
+    const permission = await Notification.requestPermission();
+    return permission;
+  }
+
+  return Notification.permission;
+};
