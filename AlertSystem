@@ -1,0 +1,31 @@
+import React from 'react';
+import { useAlerts } from '../contexts/AlertContext';
+import AlertForm from '../components/AlertForm';
+import AlertList from '../components/AlertList';
+import AlertNotification from '../components/alerts/AlertNotification';
+
+function AlertSystem() {
+  const { alerts, addAlert, notificationPermission } = useAlerts();
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold text-gray-900">Alert System</h1>
+
+      <AlertNotification notificationPermission={notificationPermission} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Create Alert</h2>
+          <AlertForm onSubmit={addAlert} />
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Active Alerts</h2>
+          <AlertList alerts={alerts} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default AlertSystem;
