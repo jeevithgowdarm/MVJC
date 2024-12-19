@@ -1,0 +1,15 @@
+import React from 'react';
+
+function AlertNotification({ notificationPermission }) {
+  if (notificationPermission === 'granted') return null;
+
+  return (
+    <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4">
+      <p className="text-yellow-700">
+        Please enable notifications to receive emergency alerts.
+      </p>
+    </div>
+  );
+}
+
+export default AlertNotification;
